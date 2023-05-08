@@ -9,6 +9,7 @@ import {
   MorningActivity,
 } from "./types";
 import { digDeviceData, digDietData, digMorningData, notion } from "./utils";
+import { getLogListFromNow } from "./logList";
 
 // 指定した日付のnotionのページを取得し、加工した上で返却する
 export const getLogDetail = async (tgtDate: string) => {
@@ -86,4 +87,10 @@ const createLogOutput = (
   };
 
   return logOutput;
+};
+
+export const getAllLogsDate = async () => {
+  const logs = await getLogListFromNow();
+  const dates = logs.tableData.map((log) => log.date);
+  return dates;
 };

@@ -7,7 +7,8 @@ import {
   LogTableProperty,
 } from "../../libs/notion/types";
 import DenseTable from "@/components/logListTable";
-import { LogListOutPut } from "../../libs/notion/logList";
+import { LogListOutPut, getLogListFromNow } from "../../libs/notion/logList";
+import { GetStaticProps } from "next";
 
 export type LogListType = {
   uuid: string;
@@ -16,22 +17,31 @@ export type LogListType = {
   tweetUrl: string;
 };
 
-const DashBoard = () => {
-  const [values, setValues] = useState<{ [date: string]: number }>();
-  const [logList, setLogList] = useState<LogListType[]>();
-  useEffect(() => {
-    (async () => {
-      const { data }: { data: LogListOutPut } = await axios.get(
-        "http://localhost:3000/api/log/list"
-      );
-      if (!data) return;
-      const { calenderData, tableData } = data;
-      setValues(calenderData);
-      setLogList(tableData);
-    })();
-  }, []);
+export const getStaticProps: GetStaticProps = async () => {
+  // const { data }: { data: LogListOutPut } = await axios.get(
+  //   "http://localhost:3000/api/log/list"
+  // );
+  const data = await getLogListFromNow();
 
-  // isostringで今日を表現する
+  if (!data) return { notFound: true };
+
+  const { calenderData, tableData } = data;
+
+  return {
+    props: {
+      calenderData,
+      tableData,
+    },
+    revalidate: 60, // 60秒ごとに再生成
+  };
+};
+
+const DashBoard = ({ calenderData, tableData }: LogListOutPut) => {
+  const [values, setValues] = useState<{ [date: string]: number }>(
+    calenderData
+  );
+  const [logList, setLogList] = useState<LogListType[]>(tableData);
+
   const until = new Date().toISOString().split("T")[0];
 
   const weekLabelAttributes = {

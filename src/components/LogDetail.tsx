@@ -10,7 +10,7 @@ const DisplayLog = ({ logOutput }: Props) => {
     <div>
       <ul>
         <li>
-          <h3>朝</h3>
+          <h3>{logOutput.date}</h3>
           <ul>
             <li>
               <h4>朝の活動開始予定時刻と場所</h4>

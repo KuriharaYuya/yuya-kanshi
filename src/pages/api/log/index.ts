@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getLogDetail } from "../../../libs/notion";
+import { getLogDetail } from "../../../../libs/notion/log";
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // '/api/log/ISO str' の 'ISO str' を取得する;
   const isoString = req.query.date;
-  const data = await getLogDetail(isoString);
+  const data = await getLogDetail(isoString as string);
   res.status(200).json(data);
 };
 export default handler;

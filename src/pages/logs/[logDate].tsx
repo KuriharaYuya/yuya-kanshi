@@ -15,7 +15,6 @@ export default function Home() {
       const { data }: { data: LogOutPut } = await axios.get(
         `http://localhost:3000/api/log?date=${logDate}`
       );
-      console.log(data, "data");
       setLogData(data);
     })();
   }, [logDate]);

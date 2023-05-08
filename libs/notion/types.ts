@@ -1,4 +1,8 @@
-// notion primitives
+// notion built-in types
+
+import { type } from "os";
+import { typeOf } from "react-is";
+
 // ----------------------------------------
 export type FileProperty = {
   files: [{ file: { url: string } }];
@@ -16,8 +20,19 @@ export type TitleProperty = {
 export type DateProperty = {
   date: { start: string };
 };
+
+export type FormulaBooleanProperty = {
+  formula: { boolean: boolean };
+};
+export type FormulaStringProperty = {
+  formula: { string: string };
+};
+
+export type UrlProperty = {
+  url: string;
+};
 // ----------------------------------------
-// notion primitives
+// notion built-in types
 
 // ----------------------------------------
 // notion API response type components
@@ -57,7 +72,8 @@ export type LogProperty = {
   screenTime: FileProperty;
   todayScreenTime: NumberProperty;
   morningActivityTime: DateProperty;
-  canPublish: boolean;
+  published: FormulaBooleanProperty;
+  tweetUrl: UrlProperty;
 };
 
 export type MorningActivity = {
@@ -80,5 +96,33 @@ export type LogOutPut = {
   mornings: Morning;
   diet: Diet;
   device: Device;
-  canPublish: boolean;
+  published: boolean;
+  tweetUrl: string;
 };
+
+// ----------------------------------------
+// notion API response at LIST
+type LogListProperty = {
+  uuid: FormulaStringProperty;
+  title: TitleProperty;
+  tweetUrl: UrlProperty;
+  date: DateProperty;
+};
+export type LogListPropertyForGitLikeCalender = [
+  {
+    properties: LogListProperty;
+  }
+];
+
+// ----------------------------------------
+// notion API response at LIST
+// ----------------------------------------
+
+// ----------------------------------------
+// notion API response at Table
+// ----------------------------------------
+
+export type LogTableProperty = LogListProperty[];
+// ----------------------------------------
+// notion API response at Table
+// ----------------------------------------

@@ -7,12 +7,8 @@ import {
   MonthlyRecord,
   Morning,
   MorningActivity,
-} from "./notion/types";
-import { digDeviceData, digDietData, digMorningData } from "./notion/utils";
-
-const notion = new Client({
-  auth: process.env.NEXT_PUBLIC_NOTION_API_KEY,
-});
+} from "./types";
+import { digDeviceData, digDietData, digMorningData, notion } from "./utils";
 
 // 指定した日付のnotionのページを取得し、加工した上で返却する
 export const getLogDetail = async (tgtDate: string) => {
@@ -85,7 +81,8 @@ const createLogOutput = (
     mornings,
     diet,
     device,
-    canPublish: logProps.canPublish,
+    published: logProps.published.formula.boolean,
+    tweetUrl: logProps.tweetUrl.url,
   };
 
   return logOutput;

@@ -10,10 +10,11 @@ import { LogTableProperty } from "../../libs/notion/types";
 import { LogListType } from "@/pages";
 import Link from "next/link";
 import Router from "next/router";
+import { Chip } from "@mui/material";
 
 export default function DenseTable({ logList }: { logList: LogListType[] }) {
-  const onClickDateHandler = () => {
-    Router.push("/logs/2023-05-07");
+  const onClickDateHandler = (isoString: string) => {
+    Router.push(`/logs/${isoString}`);
   };
   return (
     <TableContainer component={Paper}>
@@ -32,9 +33,10 @@ export default function DenseTable({ logList }: { logList: LogListType[] }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="right">
-                <Link href="#" onClick={onClickDateHandler}>
-                  {log.title}
-                </Link>
+                <Chip
+                  label={log.title}
+                  onClick={() => onClickDateHandler(log.date)}
+                />
               </TableCell>
               <TableCell align="right">{log.date}</TableCell>
               <TableCell align="right">{log.tweetUrl}</TableCell>

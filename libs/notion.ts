@@ -11,7 +11,7 @@ import {
 import { digDeviceData, digDietData, digMorningData } from "./notion/utils";
 
 const notion = new Client({
-  auth: "secret_FYA0OO7N5Haa8mDyuUQ9eFKNCM1ddgu34MqFte7DQtC",
+  auth: process.env.NEXT_PUBLIC_NOTION_API_KEY,
 });
 
 // 指定した日付のnotionのページを取得し、加工した上で返却する

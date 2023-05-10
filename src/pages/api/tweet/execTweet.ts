@@ -3,6 +3,7 @@ import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import { notion } from "../../../../libs/notion/utils";
 import { LogOutPut } from "../../../../libs/notion/types";
+import { SERVER_URL } from "@/libs/server";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const tgtDate = req.query.date as string;
@@ -10,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // headerのauthを検証する
   authUser(req, res);
   const { data } = (await axios.get(
-    `http://localhost:3000/api/log?date=${tgtDate}`
+    `${SERVER_URL}/api/log?date=${tgtDate}`
   )) as { data: LogOutPut };
   const log = data;
   // publishedがtrue && tweetUrlが空であるかを確認する
@@ -25,12 +26,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // ここでtwwet用APIを実行する
 
-  const tweetId = await axios.post(
-    "http://localhost:3000/api/tweet/postTweet",
-    {
-      log,
-    }
-  );
+  const tweetId = await axios.post(`${SERVER_URL}/api/tweet/postTweet`, {
+    log,
+  });
   //   TODO: call lambda function
 
   const tweetUrl = `https://twitter.com/intern_ukaruzo/status/${tweetId.data}`;
@@ -78,7 +76,7 @@ export const callExecTweetApi = async (date: string) => {
     },
   });
   const res = await axiosBase.get(
-    `http://localhost:3000/api/tweet/execTweet?date=${date}`
+    `${SERVER_URL}/api/tweet/execTweet?date=${date}`
   );
   return res.data;
 };

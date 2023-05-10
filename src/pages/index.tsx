@@ -5,9 +5,6 @@ import { LogListOutPut, getLogListFromNow } from "../../libs/notion/logList";
 import { GetStaticProps } from "next";
 
 export const getStaticProps: GetStaticProps = async () => {
-  // const { data }: { data: LogListOutPut } = await axios.get(
-  //   "http://localhost:3000/api/log/list"
-  // );
   const data = await getLogListFromNow(false);
 
   if (!data) return { notFound: true };

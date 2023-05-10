@@ -1,8 +1,4 @@
 // notion built-in types
-
-import { type } from "os";
-import { typeOf } from "react-is";
-
 // ----------------------------------------
 export type FileProperty = {
   files: [{ file: { url: string } }];
@@ -64,6 +60,7 @@ export type Device = {
 // notion API response types
 export type LogProperty = {
   // TODO ここで、掘るよ
+  uuid: FormulaStringProperty;
   title: TitleProperty;
   date: DateProperty;
   morningImage: FileProperty;
@@ -91,6 +88,7 @@ export type MonthlyRecord = {
 // ----------------------------------------
 // notion API response in the end
 export type LogOutPut = {
+  uuid: string;
   title: string;
   date: string;
   mornings: Morning;
@@ -107,6 +105,7 @@ type LogListProperty = {
   title: TitleProperty;
   tweetUrl: UrlProperty;
   date: DateProperty;
+  published: FormulaBooleanProperty;
 };
 export type LogListPropertyForGitLikeCalender = [
   {

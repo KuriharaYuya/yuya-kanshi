@@ -1,11 +1,7 @@
-import { Client } from "@notionhq/client";
 import {
-  Device,
-  Diet,
   LogOutPut,
   LogProperty,
   MonthlyRecord,
-  Morning,
   MorningActivity,
 } from "./types";
 import { digDeviceData, digDietData, digMorningData, notion } from "./utils";
@@ -77,6 +73,7 @@ const createLogOutput = (
 
   //   結合する
   const logOutput: LogOutPut = {
+    uuid: logProps.uuid.formula.string,
     title: logProps.title.title[0].plain_text,
     date: logProps.date.date.start,
     mornings,
@@ -90,7 +87,7 @@ const createLogOutput = (
 };
 
 export const getAllLogsDate = async () => {
-  const logs = await getLogListFromNow();
+  const logs = await getLogListFromNow(false);
   const dates = logs.tableData.map((log) => log.date);
   return dates;
 };

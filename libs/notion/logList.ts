@@ -2,27 +2,14 @@ import { LogListType } from "@/pages";
 import { LogListPropertyForGitLikeCalender, LogTableProperty } from "./types";
 import { notion } from "./utils";
 
-export const getLogListFromNow = async (): Promise<LogListOutPut> => {
+export const getLogListFromNow = async (
+  onlyPubLish: boolean
+): Promise<LogListOutPut> => {
+  const conditions = switchSearchCondition(onlyPubLish);
   const { results } = await notion.databases.query({
     database_id: "8af74dfac9a0482bab353741bb355971",
-    filter: {
-      and: [
-        {
-          property: "published",
-          formula: {
-            checkbox: {
-              equals: true,
-            },
-          },
-        },
-        {
-          property: "date",
-          date: {
-            past_year: {},
-          },
-        },
-      ],
-    },
+    filter: conditions,
+
     sorts: [
       {
         property: "date",
@@ -75,7 +62,38 @@ const destructureForTable = (
       date: log.properties.date.date.start,
       title: log.properties.title.title[0].plain_text,
       tweetUrl: log.properties.tweetUrl.url,
+      published: log.properties.published.formula.boolean,
     };
   });
   return tgt;
+};
+
+const switchSearchCondition = (onlyPubLish: boolean) => {
+  if (onlyPubLish) {
+    return {
+      and: [
+        {
+          property: "published",
+          formula: {
+            checkbox: {
+              equals: true,
+            },
+          },
+        },
+        {
+          property: "date",
+          date: {
+            past_year: {},
+          },
+        },
+      ],
+    };
+  } else {
+    return {
+      property: "date",
+      date: {
+        past_year: {},
+      },
+    };
+  }
 };

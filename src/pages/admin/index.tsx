@@ -9,7 +9,7 @@ const TweetAdmin = () => {
   useEffect(() => {
     (async () => {
       const { data } = await axios.get(
-        `${SERVER_URL}/api/log/list?onlyPublished=false`
+        `${SERVER_URL()}/api/log/list?onlyPublished=false`
       );
       setLogData(data.tableData);
     })();

@@ -11,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // headerのauthを検証する
   authUser(req, res);
   const { data } = (await axios.get(
-    `${SERVER_URL}/api/log?date=${tgtDate}`
+    `${SERVER_URL()}/api/log?date=${tgtDate}`
   )) as { data: LogOutPut };
   const log = data;
   // publishedがtrue && tweetUrlが空であるかを確認する
@@ -26,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // ここでtwwet用APIを実行する
 
-  const tweetId = await axios.post(`${SERVER_URL}/api/tweet/postTweet`, {
+  const tweetId = await axios.post(`${SERVER_URL()}/api/tweet/postTweet`, {
     log,
   });
   //   TODO: call lambda function
@@ -76,7 +76,7 @@ export const callExecTweetApi = async (date: string) => {
     },
   });
   const res = await axiosBase.get(
-    `${SERVER_URL}/api/tweet/execTweet?date=${date}`
+    `${SERVER_URL()}/api/tweet/execTweet?date=${date}`
   );
   return res.data;
 };

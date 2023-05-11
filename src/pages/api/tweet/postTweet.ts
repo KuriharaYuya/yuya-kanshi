@@ -4,9 +4,13 @@ import { generateTweetData } from "./_generateTweet";
 import { LogOutPut } from "../../../../libs/notion/types";
 import { TwitterApi } from "twitter-api-v2";
 import axios from "axios";
+import { authUser } from "../_apiAuth";
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // '/api/log/ISO str' の 'ISO str' を取得する;
+  if (!authUser(req, res)) {
+    return;
+  }
   const log = req.body.log as LogOutPut;
   const tweetText = generateTweetData(log);
   const tweetId = await postTweet(tweetText, log.device.screenTime);

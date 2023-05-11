@@ -8,12 +8,19 @@ import {
   MorningActivity,
 } from "./types";
 
-function getMinuteDifference(dateString1: string, dateString2: string): number {
+function getMinuteDifference(dateString1: string, dateString2: string): string {
   const date1 = new Date(dateString1);
   const date2 = new Date(dateString2);
-  const differenceInMs = Math.abs(date1.getTime() - date2.getTime());
-  const differenceInMinutes = Math.floor(differenceInMs / (1000 * 60));
-  return differenceInMinutes;
+  const differenceInMs = date2.getTime() - date1.getTime();
+  const differenceInMinutes = Math.floor(
+    Math.abs(differenceInMs) / (1000 * 60)
+  );
+
+  if (differenceInMs < 0) {
+    return `${differenceInMinutes}分遅い`;
+  } else {
+    return `${differenceInMinutes}分早い`;
+  }
 }
 
 export const digMorningData = (
@@ -32,7 +39,30 @@ export const digMorningData = (
     ),
     morningActivityLastEdited:
       morningActivity.morningActivityLastEdited.last_edited_time,
+    morningTargetPlace: morningActivity.morningTargetPlace.title[0].plain_text,
   };
+};
+
+const getCalorieDifference = (
+  monthlyCalorie: number,
+  todayCalorie: number
+): string => {
+  const difference = monthlyCalorie - todayCalorie;
+
+  if (difference < 0) {
+    return `${Math.abs(difference)}kcal目標より多い`;
+  } else if (difference > 0) {
+    return `${difference}kcal目標より少ない`;
+  } else {
+    return "目標通り";
+  }
+};
+const isUpperToMsg = (isUpper: boolean): string => {
+  if (isUpper) {
+    return "上限";
+  } else {
+    return "下限";
+  }
 };
 
 export const digDietData = (
@@ -43,8 +73,13 @@ export const digDietData = (
     myFitnessPal: logProps.myFitnessPal.files[0].file.url,
     todayCalorie: logProps.todayCalorie.number,
     monthlyCalorie: monthlyProps.monthlyCalorie.number,
-    todayCalorieGap:
-      monthlyProps.monthlyCalorie.number - logProps.todayCalorie.number,
+    todayCalorieGap: getCalorieDifference(
+      monthlyProps.monthlyCalorie.number,
+      logProps.todayCalorie.number
+    ),
+    monthlyCalorieIsUpper: isUpperToMsg(
+      monthlyProps.monthlyCalorieIsUpper.checkbox
+    ),
   };
 };
 

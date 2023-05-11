@@ -1,5 +1,6 @@
+import { SERVER_URL } from "@/libs/server";
 import { LogOutPut } from "../../../../libs/notion/types";
-import { convertToJST } from "./_timeLib";
+import { convertToJST } from "../../../libs/timeLib";
 
 export const generateTweetData = (log: LogOutPut) => {
   /*
@@ -18,16 +19,16 @@ ${convertToJST(log.date, "A")} 今日の記録
 
 起床時間 ${convertToJST(log.mornings.morningActivityTime, "B")} 目標より${
     log.mornings.morningActivityGapMinutes
-  }分${log.mornings.morningActivityGapMinutes > 0 ? "早い" : "遅い"}
+  }
 スクリーンタイム ${log.device.todayScreenTime} 目標より${
     log.device.screenTimeGapMinutes
-  }分${log.device.screenTimeGapMinutes > 0 ? "少ない" : "多い"}
-食事: ${log.diet.todayCalorie}kcal 目標より${log.diet.todayCalorieGap}kcal${
-    log.diet.todayCalorieGap > 0 ? "少ない" : "多い"
+  }分${log.device.screenTimeGapMinutes}
+食事: ${log.diet.monthlyCalorie}kcal(${log.diet.monthlyCalorieIsUpper})  ${
+    log.diet.todayCalorieGap
   }
 
-下記URLでタスク以外の３つの行動が事実である証明をしています。
-http://loccalhost:3000/log/${log.date}
+下記URLで行動が事実である証明をしています。
+${SERVER_URL()}/logs/${log.date}
 
 明日も頑張ります
 `;

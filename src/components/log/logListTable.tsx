@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { LogTableProperty } from "../../libs/notion/types";
+import { LogTableProperty } from "../../../libs/notion/types";
 import { LogListType } from "@/pages";
 import Link from "next/link";
 import Router from "next/router";

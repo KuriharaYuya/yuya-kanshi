@@ -1,6 +1,6 @@
 import React from "react";
 import Calender from "react-github-contribution-calendar";
-import LogTable from "@/components/logListTable";
+import LogTable from "@/components/log/logListTable";
 import { LogListOutPut, getLogListFromNow } from "../../libs/notion/logList";
 import { GetStaticProps } from "next";
 

@@ -1,6 +1,6 @@
 import { LogOutPut } from "../../../libs/notion/types";
 import { useEffect, useState } from "react";
-import DisplayLog from "@/components/LogDetail";
+import DisplayLog from "@/components/log/LogDetail";
 import { useRouter } from "next/router";
 import { getAllLogsDate, getLogDetail } from "../../../libs/notion/log";
 import { GetStaticProps, GetStaticPaths } from "next";

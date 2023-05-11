@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { LogListType } from "..";
-import LogTable from "@/components/logListTable";
+import LogTable from "@/components/log/logListTable";
 import { SERVER_URL } from "@/libs/server";
 import { axiosWithApiAuth } from "../api/_apiAuth";
 

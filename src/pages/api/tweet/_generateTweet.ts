@@ -26,9 +26,9 @@ ${convertToJST(log.date, "A")} 今日の記録
     log.device.screenTimeGapMinutes
   }分${log.device.screenTimeGapMinutes}
 
-食事: ${log.diet.todayCalorie}kcal 月次の一日の目標より${
-    log.diet.todayCalorieGap
-  }
+食事: ${log.diet.todayCalorie}kcal 月次の一日の目標の${
+    log.diet.monthlyCalorie
+  }(${log.diet.monthlyCalorieIsUpper})より${log.diet.todayCalorieGap}
 
 下記URLでタスク以外の３つの行動が事実である証明をしています。
 http://loccalhost:3000/log/${log.date}

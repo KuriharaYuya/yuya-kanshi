@@ -50,9 +50,9 @@ const getCalorieDifference = (
   const difference = monthlyCalorie - todayCalorie;
 
   if (difference < 0) {
-    return `${Math.abs(difference)}kcal目標より多い`;
+    return `${Math.abs(difference)}kcal多い`;
   } else if (difference > 0) {
-    return `${difference}kcal目標より少ない`;
+    return `${difference}kcal少ない`;
   } else {
     return "目標通り";
   }

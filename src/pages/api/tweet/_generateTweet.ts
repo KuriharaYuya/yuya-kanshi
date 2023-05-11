@@ -1,6 +1,5 @@
-import { SERVER_URL } from "@/libs/server";
+import { convertToJST } from "@/libs/timeLib";
 import { LogOutPut } from "../../../../libs/notion/types";
-import { convertToJST } from "../../../libs/timeLib";
 
 export const generateTweetData = (log: LogOutPut) => {
   /*
@@ -17,18 +16,22 @@ export const generateTweetData = (log: LogOutPut) => {
   const str = `
 ${convertToJST(log.date, "A")} 今日の記録
 
-起床時間 ${convertToJST(log.mornings.morningActivityTime, "B")} 目標より${
-    log.mornings.morningActivityGapMinutes
-  }
-スクリーンタイム ${log.device.todayScreenTime} 目標より${
+
+起床時間 ${convertToJST(
+    log.mornings.morningActivityTime,
+    "B"
+  )} 前日計画した目標時刻より${log.mornings.morningActivityGapMinutes}
+
+スクリーンタイム ${log.device.todayScreenTime} 月次の一日の目標より${
     log.device.screenTimeGapMinutes
   }分${log.device.screenTimeGapMinutes}
-食事: ${log.diet.monthlyCalorie}kcal(${log.diet.monthlyCalorieIsUpper})  ${
+
+食事: ${log.diet.todayCalorie}kcal 月次の一日の目標より${
     log.diet.todayCalorieGap
   }
 
-下記URLで行動が事実である証明をしています。
-${SERVER_URL()}/logs/${log.date}
+下記URLでタスク以外の３つの行動が事実である証明をしています。
+http://loccalhost:3000/log/${log.date}
 
 明日も頑張ります
 `;

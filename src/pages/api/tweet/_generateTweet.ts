@@ -1,5 +1,5 @@
 import { LogOutPut } from "../../../../libs/notion/types";
-import { convertToJST } from "./timeLib";
+import { convertToJST } from "./_timeLib";
 
 export const generateTweetData = (log: LogOutPut) => {
   /*

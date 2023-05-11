@@ -1,16 +1,18 @@
 import { LogListType } from "@/pages";
-import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import { notion } from "../../../../libs/notion/utils";
 import { LogOutPut } from "../../../../libs/notion/types";
 import { SERVER_URL } from "@/libs/server";
+import { authUser, axiosWithApiAuth } from "../_apiAuth";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const tgtDate = req.query.date as string;
 
   // headerのauthを検証する
-  authUser(req, res);
-  const { data } = (await axios.get(
+  if (!authUser(req, res)) {
+    return;
+  }
+  const { data } = (await axiosWithApiAuth.get(
     `${SERVER_URL()}/api/log?date=${tgtDate}`
   )) as { data: LogOutPut };
   const log = data;
@@ -26,24 +28,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // ここでtwwet用APIを実行する
 
-  const tweetId = await axios.post(`${SERVER_URL()}/api/tweet/postTweet`, {
-    log,
-  });
+  const tweetId = await axiosWithApiAuth.post(
+    `${SERVER_URL()}/api/tweet/postTweet`,
+    {
+      log,
+    }
+  );
   //   TODO: call lambda function
 
   const tweetUrl = `https://twitter.com/intern_ukaruzo/status/${tweetId.data}`;
   await writeTweetUrl(log, tweetUrl);
   res.status(200).json({ message: "tweet success" });
-};
-
-const authUser = (req: NextApiRequest, res: NextApiResponse) => {
-  const isAuth =
-    req.headers.authorization ==
-    `Bearer ${process.env.NEXT_PUBLIC_TWEET_AUTH_TOKEN}`;
-  // if (!isAuth) {
-  //   res.status(401).json({ message: "Unauthorized" });
-  //   return;
-  // }
 };
 
 const validateLog = async (log: LogListType) => {
@@ -70,12 +65,8 @@ const writeTweetUrl = async (log: LogListType, tweetUrl: string) => {
 
 export const callExecTweetApi = async (date: string) => {
   // heaeder に Authorization をつける
-  const axiosBase = axios.create({
-    headers: {
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_TWEET_AUTH_TOKEN}`,
-    },
-  });
-  const res = await axiosBase.get(
+
+  const res = await axiosWithApiAuth.get(
     `${SERVER_URL()}/api/tweet/execTweet?date=${date}`
   );
   return res.data;

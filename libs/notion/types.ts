@@ -27,6 +27,10 @@ export type FormulaStringProperty = {
 export type UrlProperty = {
   url: string;
 };
+
+export type BooleanProperty = {
+  checkbox: boolean;
+};
 // ----------------------------------------
 // notion built-in types
 
@@ -36,15 +40,17 @@ export type Morning = {
   morningImage: string;
   morningActivityTime: string;
   morningActivityEstimatedTime: string;
-  morningActivityGapMinutes: number;
+  morningActivityGapMinutes: string;
   morningActivityLastEdited: string;
+  morningTargetPlace: string;
 };
 
 export type Diet = {
   myFitnessPal: string;
   todayCalorie: number;
   monthlyCalorie: number;
-  todayCalorieGap: number;
+  todayCalorieGap: string;
+  monthlyCalorieIsUpper: string;
 };
 
 export type Device = {
@@ -76,11 +82,13 @@ export type LogProperty = {
 export type MorningActivity = {
   morningActivityEstimatedTime: DateProperty;
   morningActivityLastEdited: LastEditedTimeProperty;
+  morningTargetPlace: TitleProperty;
 };
 
 export type MonthlyRecord = {
   monthlyScreenTime: NumberProperty;
   monthlyCalorie: NumberProperty;
+  monthlyCalorieIsUpper: BooleanProperty;
 };
 // ----------------------------------------
 // notion API response types

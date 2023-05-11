@@ -4,7 +4,6 @@ import { generateTweetData } from "./_generateTweet";
 import { LogOutPut } from "../../../../libs/notion/types";
 import { TwitterApi } from "twitter-api-v2";
 import axios from "axios";
-import { fsync, fsyncSync } from "fs";
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // '/api/log/ISO str' の 'ISO str' を取得する;
@@ -31,18 +30,16 @@ const postTweet = async (
   const response = await axios.get(logScreenTimeImage, {
     responseType: "arraybuffer",
   });
-
-  // 画像をファイルとして保存
-  const fs = require("fs");
-  fs.writeFileSync("./image.png", response.data);
-
-  const mediaId = await client.v1.uploadMedia("./image.png");
+  const buffer = Buffer.from(response.data, "binary");
+  // 画像をバッファとして取得
+  const mediaId = await client.v1.uploadMedia(buffer, {
+    type: "image/png",
+  });
   const { data } = await client.v2.tweet(tweetText, {
     media: { media_ids: [mediaId] },
   });
 
-  // ファイルを削除
-  fs.unlinkSync("./image.png");
+  // const tweetId = data.id;
   const tweetId = data.id;
   return tweetId;
 };

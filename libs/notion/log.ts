@@ -87,7 +87,7 @@ const createLogOutput = (
 };
 
 export const getAllLogsDate = async () => {
-  const logs = await getLogListFromNow(false);
+  const logs = await getLogListFromNow(true);
   const dates = logs.tableData.map((log) => log.date);
   return dates;
 };

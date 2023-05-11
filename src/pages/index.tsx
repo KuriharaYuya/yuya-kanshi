@@ -5,7 +5,7 @@ import { LogListOutPut, getLogListFromNow } from "../../libs/notion/logList";
 import { GetStaticProps } from "next";
 
 export const getStaticProps: GetStaticProps = async () => {
-  const data = await getLogListFromNow(false);
+  const data = await getLogListFromNow(true);
 
   if (!data) return { notFound: true };
 

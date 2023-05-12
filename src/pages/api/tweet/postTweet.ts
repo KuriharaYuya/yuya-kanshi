@@ -5,6 +5,7 @@ import { LogOutPut } from "../../../../libs/notion/types";
 import { TwitterApi } from "twitter-api-v2";
 import axios from "axios";
 import { authUser } from "../_apiAuth";
+import { countPublishedLogs } from "../../../../libs/notion/logList";
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // '/api/log/ISO str' の 'ISO str' を取得する;
@@ -12,7 +13,8 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
   const log = req.body.log as LogOutPut;
-  const tweetText = generateTweetData(log);
+  const numberOfPublishedLogs = await countPublishedLogs(true);
+  const tweetText = generateTweetData(log, numberOfPublishedLogs);
   const tweetId = await postTweet(tweetText, log.device.screenTime);
   res.status(200).json(tweetId);
 };

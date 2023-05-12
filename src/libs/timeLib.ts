@@ -19,8 +19,8 @@ export const convertToJST = (
   const minutes = String(date.getMinutes()).padStart(2, "0");
 
   if (formatType === "A") {
-    return `${year}年${month}月${day}日`;
+    return `${year}/${month}/${day}`;
   } else {
-    return `${month}月${day}日${hours}時${minutes}分`;
+    return `${month}/${day}/${hours}:${minutes}`;
   }
 };

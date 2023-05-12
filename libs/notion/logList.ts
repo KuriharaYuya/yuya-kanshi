@@ -97,3 +97,24 @@ const switchSearchCondition = (onlyPubLish: boolean) => {
     };
   }
 };
+
+export const countPublishedLogs = async (
+  onlyPubLish: boolean
+): Promise<number> => {
+  const conditions = switchSearchCondition(onlyPubLish);
+  const { results } = await notion.databases.query({
+    database_id: "8af74dfac9a0482bab353741bb355971",
+    filter: conditions,
+
+    sorts: [
+      {
+        property: "date",
+        direction: "descending",
+      },
+    ],
+  });
+  //   @ts-ignore
+  const data: LogListPropertyForGitLikeCalender = results;
+  const count = data.length;
+  return count;
+};

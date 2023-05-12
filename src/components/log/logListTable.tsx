@@ -12,6 +12,7 @@ import Link from "next/link";
 import Router from "next/router";
 import { Checkbox, Chip, Modal, Pagination } from "@mui/material";
 import { callExecTweetApi } from "@/pages/api/tweet/execTweet";
+import style from "./logListTable.module.scss";
 
 export default function LogTable({
   logList,
@@ -46,12 +47,12 @@ export default function LogTable({
     <>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 300 }} size="small" aria-label="a dense table">
-          <TableHead>
+          <TableHead className={style.logListTable}>
             <TableRow>
               {isAdmin && <TableCell>Published?</TableCell>}
               {isAdmin && <TableCell>Tweeted</TableCell>}
               <TableCell>タイトル</TableCell>
-              <TableCell align="right">日付</TableCell>
+              <TableCell className={style.date}>日付</TableCell>
               <TableCell align="right">Twitter URL</TableCell>
             </TableRow>
           </TableHead>
@@ -88,8 +89,10 @@ export default function LogTable({
                       onClick={() => onClickDateHandler(log.date)}
                     />
                   </TableCell>
-                  <TableCell align="right">{log.date}</TableCell>
-                  <TableCell align="right">{log.tweetUrl}</TableCell>
+                  <TableCell style={{ width: "auto" }}>{log.date}</TableCell>
+                  <TableCell align="right">
+                    <a href={log.tweetUrl}>ツイートurl</a>
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>

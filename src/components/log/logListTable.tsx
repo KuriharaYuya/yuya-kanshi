@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,12 +7,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { LogTableProperty } from "../../../libs/notion/types";
 import { LogListType } from "@/pages";
 import Link from "next/link";
 import Router from "next/router";
-import { Checkbox, Chip, Modal } from "@mui/material";
-import { useState } from "react";
+import { Checkbox, Chip, Modal, Pagination } from "@mui/material";
 import { callExecTweetApi } from "@/pages/api/tweet/execTweet";
 
 export default function LogTable({
@@ -33,6 +32,16 @@ export default function LogTable({
     setTgtTweet(log);
   };
 
+  const [page, setPage] = useState(1);
+  const rowsPerPage = 10;
+
+  const handleChangePage = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
+
   return (
     <>
       <TableContainer component={Paper}>
@@ -40,49 +49,56 @@ export default function LogTable({
           <TableHead>
             <TableRow>
               {isAdmin && <TableCell>Published?</TableCell>}
-              {isAdmin && <TableCell>tweeted</TableCell>}
+              {isAdmin && <TableCell>Tweeted</TableCell>}
               <TableCell>タイトル</TableCell>
               <TableCell align="right">日付</TableCell>
-              <TableCell align="right">twitter URL</TableCell>
+              <TableCell align="right">Twitter URL</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {logList.map((log) => (
-              <TableRow
-                key={log.uuid}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                {isAdmin && (
-                  <TableCell component="th" scope="row">
-                    <Checkbox
-                      {...checkBoxLabel}
-                      checked={log.published}
-                      aria-label="published"
+            {logList
+              .slice((page - 1) * rowsPerPage, page * rowsPerPage)
+              .map((log) => (
+                <TableRow
+                  key={log.uuid}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  {isAdmin && (
+                    <TableCell component="th" scope="row">
+                      <Checkbox
+                        {...checkBoxLabel}
+                        checked={log.published}
+                        aria-label="published"
+                      />
+                    </TableCell>
+                  )}
+                  {isAdmin && (
+                    <TableCell component="th" scope="row">
+                      <Checkbox
+                        onChange={() => onClickTweetHandler(log)}
+                        {...checkBoxLabel}
+                        checked={!!log.tweetUrl}
+                        aria-label="tweeted"
+                      />
+                    </TableCell>
+                  )}
+                  <TableCell align="right">
+                    <Chip
+                      label={log.title}
+                      onClick={() => onClickDateHandler(log.date)}
                     />
                   </TableCell>
-                )}
-                {isAdmin && (
-                  <TableCell component="th" scope="row">
-                    <Checkbox
-                      onChange={() => onClickTweetHandler(log)}
-                      {...checkBoxLabel}
-                      checked={!!log.tweetUrl}
-                      aria-label="tweeted"
-                    />
-                  </TableCell>
-                )}
-                <TableCell align="right">
-                  <Chip
-                    label={log.title}
-                    onClick={() => onClickDateHandler(log.date)}
-                  />
-                </TableCell>
-                <TableCell align="right">{log.date}</TableCell>
-                <TableCell align="right">{log.tweetUrl}</TableCell>
-              </TableRow>
-            ))}
+                  <TableCell align="right">{log.date}</TableCell>
+                  <TableCell align="right">{log.tweetUrl}</TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
+        <Pagination
+          count={Math.ceil(logList.length / rowsPerPage)}
+          page={page}
+          onChange={handleChangePage}
+        />
       </TableContainer>
       {tgtTweet && (
         <TweetConfirmModal

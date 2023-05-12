@@ -82,6 +82,20 @@ export const digDietData = (
     ),
   };
 };
+const getScreenTimeDifference = (
+  monthlyScreenTime: number,
+  todayScreenTime: number
+): string => {
+  const difference = monthlyScreenTime - todayScreenTime;
+  if (difference < 0) {
+    return `${Math.abs(difference)}分多い`;
+  }
+  if (difference > 0) {
+    return `${difference}分少ない`;
+  } else {
+    return "目標通り";
+  }
+};
 
 export const digDeviceData = (
   logProps: LogProperty,
@@ -90,8 +104,10 @@ export const digDeviceData = (
   return {
     screenTime: logProps.screenTime.files[0].file.url,
     todayScreenTime: logProps.todayScreenTime.number,
-    screenTimeGapMinutes:
-      monthlyProps.monthlyScreenTime.number - logProps.todayScreenTime.number,
+    screenTimeGapMinutes: getScreenTimeDifference(
+      monthlyProps.monthlyScreenTime.number,
+      logProps.todayScreenTime.number
+    ),
     monthlyScreenTime: monthlyProps.monthlyScreenTime.number,
   };
 };

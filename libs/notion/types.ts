@@ -56,7 +56,7 @@ export type Diet = {
 export type Device = {
   screenTime: string;
   todayScreenTime: number;
-  screenTimeGapMinutes: number;
+  screenTimeGapMinutes: string;
   monthlyScreenTime: number;
 };
 // notion API response type components

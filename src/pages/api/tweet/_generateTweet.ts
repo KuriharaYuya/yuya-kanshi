@@ -2,7 +2,10 @@ import { convertToJST } from "@/libs/timeLib";
 import { LogOutPut } from "../../../../libs/notion/types";
 import { SERVER_URL } from "@/libs/server";
 
-export const generateTweetData = (log: LogOutPut) => {
+export const generateTweetData = (
+  log: LogOutPut,
+  numberOfPublishedLogs: number
+): string => {
   /*
 2023/05/07 今日の記録
 
@@ -15,23 +18,22 @@ export const generateTweetData = (log: LogOutPut) => {
 明日も頑張ります
   */
   const str = `
-${convertToJST(log.date, "A")} 今日の記録
+#一日一回感謝の正拳突き ${numberOfPublishedLogs}日目
+${convertToJST(log.date, "A")}の記録
 
-起床時間 ${convertToJST(
+[朝活] ${convertToJST(
     log.mornings.morningActivityTime,
     "B"
   )} 前日計画した目標時刻より${log.mornings.morningActivityGapMinutes}
-
-スクリーンタイム ${log.device.todayScreenTime}分 月次の日毎目標より${
+[スマホ使用] ${log.device.todayScreenTime}分 月次日毎目標より${
     log.device.screenTimeGapMinutes
   }
-
-食事: ${log.diet.todayCalorie}kcal 月次の日毎目標の${
+[食事] ${log.diet.todayCalorie}kcal 月次日毎目標の${
     log.diet.monthlyCalorie
   }kcal(${log.diet.monthlyCalorieIsUpper})より${log.diet.todayCalorieGap}
 
 下記で行動が事実である証明をしています
-${SERVER_URL()}/${log.date}
+${SERVER_URL()}/logs/${log.date}
 `;
   return str;
 };

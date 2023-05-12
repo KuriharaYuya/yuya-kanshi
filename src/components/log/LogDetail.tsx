@@ -2,30 +2,25 @@ import { LogOutPut } from "../../../libs/notion/types";
 import MorningProps from "./detail/morning";
 import DietProps from "./detail/diet";
 import DeviceProps from "./detail/device";
-import { useEffect } from "react";
-import { generateTweetData } from "@/pages/api/tweet/_generateTweet";
-import { countPublishedLogs } from "../../../libs/notion/logList";
+import styled from "./detail/section.module.scss";
 
 type Props = {
   logOutput: LogOutPut;
 };
 
 const DisplayLog = ({ logOutput }: Props) => {
-  // useEffect(() => {
-  //   (async () => {
-  //     const numberOfLogs = await countPublishedLogs(true);
-  //     const text = generateTweetData(logOutput, numberOfLogs);
-  //     console.log(text);
-  //     console.log(text.length);
-  //   })();
-  // }, [logOutput]);
-
   return (
-    <div>
+    <>
+      <h1 style={{ textAlign: "center", margin: "0 auto" }}>
+        {logOutput.date}の記録
+      </h1>
+      <div style={{ textAlign: "center", margin: "0 auto" }}>
+        <a href={logOutput.tweetUrl}>twitterのURL</a>
+      </div>
       <MorningProps morningProps={logOutput.mornings} />
       <DeviceProps deviceProps={logOutput.device} />
       <DietProps dietProps={logOutput.diet} />
-    </div>
+    </>
   );
 };
 export default DisplayLog;

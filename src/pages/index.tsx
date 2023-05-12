@@ -25,7 +25,11 @@ const DashBoard = ({ calenderData, tableData }: LogListOutPut) => {
   const { weekLabel, monthLabel, panel } = LabelDesigns;
 
   return (
-    <div>
+    <div style={{ margin: "0 auto" }}>
+      <div style={{ textAlign: "center" }}>
+        <h3>毎日継続カレンダー</h3>
+        <p>記録されたら黒くなります</p>
+      </div>
       <Calender
         values={calenderData}
         until={until}
@@ -33,6 +37,8 @@ const DashBoard = ({ calenderData, tableData }: LogListOutPut) => {
         monthLabelAttributes={monthLabel}
         panelAttributes={panel}
       />
+      <br />
+      <br />
       <LogTable logList={tableData} isAdmin={false} />
     </div>
   );

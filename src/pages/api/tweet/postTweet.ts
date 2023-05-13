@@ -6,6 +6,7 @@ import { TwitterApi } from "twitter-api-v2";
 import axios from "axios";
 import { authUser } from "../_apiAuth";
 import { countPublishedLogs } from "../../../../libs/notion/logList";
+import { generateCommentData } from "./_generateComment";
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // '/api/log/ISO str' の 'ISO str' を取得する;
@@ -44,8 +45,11 @@ const postTweet = async (
   const { data } = await client.v2.tweet(tweetText, {
     media: { media_ids: [mediaId] },
   });
-
-  // const tweetId = data.id;
   const tweetId = data.id;
+
+  // リプライを送る
+  const replyText = generateCommentData();
+  await client.v2.reply(replyText, tweetId);
+
   return tweetId;
 };

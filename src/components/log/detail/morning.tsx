@@ -28,7 +28,8 @@ const MorningProps = ({ morningProps }: Props) => {
           <li>
             朝の開始予定時刻：
             <span style={{ fontWeight: "bold" }}>
-              {convertToJST(morningActivityEstimatedTime, "B")}
+              {convertToJST(morningActivityEstimatedTime, "B")}に
+              {morningTargetPlace}
             </span>
           </li>
           <li>
@@ -43,14 +44,14 @@ const MorningProps = ({ morningProps }: Props) => {
               {morningActivityGapMinutes}
             </span>
           </li>
-          <div>
+          <li>
             朝の到着予定データの最終編集時刻：
             <span style={{ fontWeight: "bold" }}>
               {convertToJST(morningActivityLastEdited, "B")}
             </span>
-          </div>
-          <br />
+          </li>
         </ul>
+        <br />
         <ul>
           チェックリスト
           <li>不正がないか？編集時刻が前日の夜以前になっているか？</li>

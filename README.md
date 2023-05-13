@@ -41,7 +41,7 @@
 </details>
   
 管理された記録は、本アプリで閲覧できるだけでなく、毎日僕自身の twitter にその要約が自動投稿されます。
-### [実際のツイートのURL](https://hogehoge)
+### [実際のツイートのURL](https://twitter.com/intern_ukaruzo/status/1657431995121643524?s=20)
 
 ## システム構成
 

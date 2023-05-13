@@ -24,7 +24,19 @@
 この web アプリは、アプリ開発者の僕自身が 5 月病にかからないために開発されました。
 
 **"朝活の開始時間"**,**"スマホのスクリーンタイム"**, **"食事"** というこれら 3 点において毎日アプリで記録をとり、アプリを用いて公開します。
+
+
+
+| 画面名                 | 画像                                                                                                                                          |
+|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| カレンダー・一覧表示画面 | <img src="https://github.com/KuriharaYuya/yuya-kanshi/assets/109059044/20047dd9-190b-40c3-abb1-9051e7fc1adf" width="200px">                |
+| 詳細画面: 朝活         | <img src="https://github.com/KuriharaYuya/yuya-kanshi/assets/109059044/c72ec587-e235-4005-b7de-d24d1c398cce" width="200px">                |
+| 詳細画面: デバイス     | <img src="https://github.com/KuriharaYuya/yuya-kanshi/assets/109059044/5ae1e371-6982-41b7-8da1-9a2bec0e9add" width="200px">                |
+| 詳細画面: 食事         | <img src="https://github.com/KuriharaYuya/yuya-kanshi/assets/109059044/14a216f1-f2df-41a3-9722-7eb44379d828" width="200px">                |
+
+
 管理された記録は、本アプリで閲覧できるだけでなく、毎日僕自身の twitter にその要約が自動投稿されます。
+### [実際のツイートのURL](https://hogehoge)
 
 ## システム構成
 

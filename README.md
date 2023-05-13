@@ -1,34 +1,127 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# YUYA-KANSHI-APP 
+五月病防止のための監視アプリ
 
-## Getting Started
+[アプリURL](https://yuya-kanshi.vercel.app/)
 
-First, run the development server:
+開発期間:　2023-05-08 ~ 05-13 おおよそ30h
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+開発者: [kurihara yuya](https://github.com/KuriharaYuya/yuya-kanshi)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 目次
+- [システム概要](#システム概要)
+- [開発背景と目的](#開発背景と目的)
+- [技術選定](#技術選定)
+- [機能詳細とこだわったこと](#機能詳細とこだわったこと)
+- [システム構成詳細](#システム構成詳細)
+- [開発時の困難と工夫](#開発時の困難と工夫)
+- [今後](#今後)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## システム概要
+このwebアプリは、アプリ開発者の僕自身が5月病にかからないために開発されました。
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+**"朝活の開始時間"**,**"スマホのスクリーンタイム"**, **"食事"** というこれら3点において毎日アプリで記録をとり、アプリを用いて公開します。
+管理された記録は、本アプリで閲覧できるだけでなく、毎日僕自身のtwitterにその要約が自動投稿されます。
 
-## Learn More
+記録された内容が事実であることを証明するために、写真を用いた記録方式が採用されています。
 
-To learn more about Next.js, take a look at the following resources:
+ざっくり機能を画像でお見せします。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+ ### ツイート
+要約された記録と、記録詳細ページへのリンクが含まれたツイートをしています
+<details>
+<summary>画像</summary>
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+![3d3ee660475a01851ec2401fbdd3ad3d](https://github.com/KuriharaYuya/yuya-kanshi/assets/109059044/ec2ba1ab-fad3-4b57-8c9e-6b833678aa32)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+</details>
+
+### ログ一覧画面
+継続して記録できているかを表すカレンダーと、ログ詳細ページへのリンクリストがあります
+<details>
+<summary>画像</summary>
+
+![IMG_4599](https://github.com/KuriharaYuya/yuya-kanshi/assets/109059044/ec3e7325-4a45-4874-9d1b-42b7ccceb24b)
+
+</details>
+
+### ログ詳細画面
+記録に含まれる内容が事実である証明と、詳細な情報を確認することができます。
+<details>
+<summary>画像</summary>
+
+![IMG_4602](https://github.com/KuriharaYuya/yuya-kanshi/assets/109059044/61705a61-466c-4d31-930b-481ac7111245)
+![IMG_4603](https://github.com/KuriharaYuya/yuya-kanshi/assets/109059044/a8a56038-2269-4607-9a8c-4abac07d527a)
+![IMG_4604](https://github.com/KuriharaYuya/yuya-kanshi/assets/109059044/d7019649-140f-414c-9dbe-a0522513a312)
+
+</details>
+
+ 
+## 開発背景と目的
+サブトピック
+- 個人的な目的
+- 副次効果として対外的に期待しているもの
+
+### 個人的な目的
+個人的な目的として、規則正しい生活を実現し、目標を達成するための時間的リソースを多く確保することがこのアプリの一番の目的です。
+
+ここ最近、努力するための時間は確保できているものの、肌感覚で自分の80%ぐらいの力しか発揮できてないという感覚がありました。
+
+具体的には、
+- スマホいじりすぎ
+- 朝起きてから布団でダラダラする
+- 筋トレしてるのに、少食すぎる
+というものがありました。これらの指標をいずれかの形で記録し、対外的に公開することにしました。
+
+ 
+やはり人に見られた方がサボりにくいので、改善すべき項目をデータとして記録し、他人の目に触れる場所に公開することを機能に盛り込みました。
+
+### 副次効果として対外的に期待しているもの
+このアプリの開発にあたって、twitterに自動投稿をしていくことになります。その際に少し工夫することで、下記の副次的な効果を期待できると感じました。
+
+- エンジニアの知り合いを増やす
+- インターンシップや案件のチャンスを得る
+- 法政大学や他の大学のエンジニアとの繋がりを広げる
+
+
+## 技術選定
+技術選定においては、以下の要点を重視しました
+- 金銭的低コスト
+- 開発工数の削減(4-5日ぐらいで終わらせたかった)
+
+### バックエンドと管理画面の開発
+- backend & DB: notion
+- backendとfrontエンドの繋ぎ込み: notionAPI
+- frontend: Next.js (TypeScript)
+-　管理画面・データ入力画面: notion (web & IOS)
+
+- Notion APIとNotionを利用し、ノーコード化を実現しました。これにより、バックエンドの開発およびランニングコストの低減が可能となりました。また、Notionを使用することで管理画面のインターフェースをノーコード化し、iOSやWebなど複数のプラットフォームで利用できるようになりました。さらに、これらのサービスは無料で提供されています。
+
+フロントエンドにおいては、Next.jsを選択しました。Next.jsのISR（Incremental Static Regeneration）を利用することで強力なキャッシュ機能を活用し、高速なパフォーマンスを実現しました。デプロイの容易さやドメインの設定も考慮し、Vercelデプロイが最適な選択肢となりました。また、TypeScriptを採用することで開発効率の向上を図りました。ウェブアプリケーションを選択することで、Twitterから直接アクセスできるようにしました。
+
+## 機能詳細とこだわったこと
+個人的な目的として、規則正しい生活を実現することを挙げています。また、自身が他人から見られる状況で最も力を発揮することに着目し、改善すべき項目をデータとして記録し、他人の目に触れる場所に公開する必要性を感じました。これにより、Twitterなどのプラットフォームを通じて積み重ねられた記録を可視化することが可能になります。
+
+
+## システム構成詳細
+システムの全体像を以下のようなアーキテクチャで構築しました（図などの詳細をここに記述）。
+また、Notionのデータベースを軽量に利用しました。
+
+## 開発時の困難と工夫
+開発の過程で以下のような課題に直面し、工夫や諦めがありました：
+- Twitter APIの利用: Twitter API v2を使用する際には英語のドキュメントを読み込み、実装に取り組む必要がありました。翻訳を頼らずに取り組んだため、大変な作業でした。
+- Next.jsのAPIを使用した投稿ロジックの切り出し
+- デザインに関する工夫
+- コードの綺麗さや管理画面のCSR（クライアントサイドレンダリング）の速度に関しては、工数の都合上諦めることとなりました。
+
+## 今後
+今後の展望としては以下のようなことに取り組む予定です：
+- 大規模な開発に向けて- コーディングテストの対策
+- コンピュータサイエンスの学習
+- 技術面接の準備
+- ポートフォリオの構築
+
+また、インターンシップ先でRailsをしっかりと学ぶことや、Terraformを使用してFargateデプロイメントを行うスキルを身につけることも目標としています。
+
+以上が、このプロジェクトに関するREADMEの概要です。詳細な内容や図表などは実際のドキュメントにて確認できます。

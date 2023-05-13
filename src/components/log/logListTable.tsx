@@ -134,12 +134,12 @@ const TweetConfirmModal = ({
       onClose={handleClose}
       closeAfterTransition
     >
-      <div>
-        <h1>ツイートしますか？</h1>
+      <>
+        <p>ツイートしますか？</p>
         <p>{log.date}</p>
         <p>{log.title}</p>
         <button onClick={onClickTweetHandler}>ツイートする</button>
-      </div>
+      </>
     </Modal>
   );
 };

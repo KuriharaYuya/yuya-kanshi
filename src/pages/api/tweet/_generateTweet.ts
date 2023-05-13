@@ -24,16 +24,17 @@ ${convertToJST(log.date, "A")}の記録
 [朝活] ${convertToJST(
     log.mornings.morningActivityTime,
     "B"
-  )} 前日計画した目標時刻より${log.mornings.morningActivityGapMinutes}
-[スマホ使用] ${log.device.todayScreenTime}分 月次日毎目標より${
+  )} 前日立てた目標より${log.mornings.morningActivityGapMinutes}
+[スマホ] ${log.device.todayScreenTime}分 目標より${
     log.device.screenTimeGapMinutes
   }
-[食事] ${log.diet.todayCalorie}kcal 月次日毎目標の${
-    log.diet.monthlyCalorie
-  }kcal(${log.diet.monthlyCalorieIsUpper})より${log.diet.todayCalorieGap}
+[食事] ${log.diet.todayCalorie}kcal 目標の${log.diet.monthlyCalorie}kcal(${
+    log.diet.monthlyCalorieIsUpper
+  })より${log.diet.todayCalorieGap}
 
-下記で行動が事実である証明をしています
+行動の証明と詳細は下記
 ${SERVER_URL()}/logs/${log.date}
+#エンジニアと繋がりたい
 `;
   return str;
 };

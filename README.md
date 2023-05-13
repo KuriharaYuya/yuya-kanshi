@@ -9,8 +9,8 @@
 開発者: [kurihara yuya](https://github.com/KuriharaYuya/yuya-kanshi)
 
 # 目次
-- [概要](#システム概要)
-- [システム概要](#システム概要)
+- [概要](#概要)
+- [システム構成](#システム構成)
 - [開発背景と目的](#開発背景と目的)
 - [技術選定](#技術選定と機能の説明)
 - [システム構成詳細と開発時に工夫したこと](#システム構成詳細と開発時に工夫したこと)
@@ -19,11 +19,15 @@
 
 おおよそ7分ほどで読めます
 
-## システム概要
+## 概要
 
 この web アプリは、アプリ開発者の僕自身が 5 月病にかからないために開発されました。
 
 **"朝活の開始時間"**,**"スマホのスクリーンタイム"**, **"食事"** というこれら 3 点において毎日アプリで記録をとり、アプリを用いて公開します。
+
+
+<details>
+<summary>各画面のキャプチャ</summary>
 
 
 
@@ -34,7 +38,8 @@
 | 詳細画面: デバイス     | <img src="https://github.com/KuriharaYuya/yuya-kanshi/assets/109059044/5ae1e371-6982-41b7-8da1-9a2bec0e9add" width="200px">                |
 | 詳細画面: 食事         | <img src="https://github.com/KuriharaYuya/yuya-kanshi/assets/109059044/14a216f1-f2df-41a3-9722-7eb44379d828" width="200px">                |
 
-
+</details>
+  
 管理された記録は、本アプリで閲覧できるだけでなく、毎日僕自身の twitter にその要約が自動投稿されます。
 ### [実際のツイートのURL](https://hogehoge)
 
@@ -51,6 +56,8 @@
 | 自動投稿の定期実行             | AWS Lambda (Python) & Amazon EventBridge |
 | インフラ                       | Vercel                                   |
 | 開発環境                       | Docker                                   |
+
+
 ![yuya-kansi drawio](https://github.com/KuriharaYuya/yuya-kanshi/assets/109059044/9ed7a03b-9cbc-4e0d-b0bd-e22dd0635c19)
 
 
@@ -210,7 +217,12 @@ Next.jsアプリの中で、**データの表示**と**データの取得と加�
 
 headerのauthorizationにトークンを乗せることで、フロントエンドAPPもしくはlambdaからしかAPIは使用できないようにしています。
 
+## 感想
+わずかな時間の中で高速に開発できたのはよかった。技術選定としてnotionを採用することで圧倒的に工数を削減することができた。
 
+
+また、こんな感じでtwitterに毎日自分の様子を投稿し続けるのは少し恥ずかしい。
+けれど自分を貫こうと思う。このアプリを通して長期的に淡々と努力して、自分のたてた目標を達成できるようにしたい。
 
 ## 今後
 

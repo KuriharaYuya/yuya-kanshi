@@ -1,7 +1,10 @@
 import { Client } from "@notionhq/client";
 import {
   Device,
+  Diary,
   Diet,
+  HostsImage,
+  HostsImageRecord,
   LogProperty,
   MonthlyRecord,
   Morning,
@@ -43,6 +46,21 @@ export const digMorningData = (
   };
 };
 
+export const digDiaryData = (logProps: LogProperty): Diary => {
+  return {
+    isDiaryDone: logProps.isDiaryDone.checkbox,
+    isChatLogDone: logProps.isChatLogDone.checkbox,
+  };
+};
+export const digHostImageData = (
+  logProps: LogProperty,
+  hostImageProps: HostsImageRecord
+): HostsImage => {
+  return {
+    todayHostsImage: logProps.todayHostsImage.files[0].file.url,
+    hostsLastEditedImage: hostImageProps.hostsLastEditedImage.files[0].file.url,
+  };
+};
 const getCalorieDifference = (
   monthlyCalorie: number,
   todayCalorie: number

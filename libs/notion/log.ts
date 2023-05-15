@@ -1,10 +1,18 @@
 import {
+  HostsImageRecord,
   LogOutPut,
   LogProperty,
   MonthlyRecord,
   MorningActivity,
 } from "./types";
-import { digDeviceData, digDietData, digMorningData, notion } from "./utils";
+import {
+  digDeviceData,
+  digDiaryData,
+  digDietData,
+  digHostImageData,
+  digMorningData,
+  notion,
+} from "./utils";
 import { getLogListFromNow } from "./logList";
 
 // 指定した日付のnotionのページを取得し、加工した上で返却する
@@ -26,9 +34,15 @@ export const getLogDetail = async (tgtDate: string) => {
   //   取得した佑弥管理DBのページIDから紐づいているデータを取得する
   const morningActivity = await getMorningActivity(logId);
   const monthlyRecord = await getMonthlyRecord(logId);
+  const HostsImageRecord = await getHostImageRecord(logId);
 
   //   フロント側で使いたい形に整形し返却
-  return createLogOutput(logProperty, morningActivity, monthlyRecord);
+  return createLogOutput(
+    logProperty,
+    morningActivity,
+    monthlyRecord,
+    HostsImageRecord
+  );
 };
 
 const getMorningActivity = async (logId: string) => {
@@ -60,16 +74,34 @@ const getMonthlyRecord = async (logId: string) => {
   const monthlyProps: MonthlyRecord = results[0].properties;
   return monthlyProps;
 };
+const getHostImageRecord = async (logId: string) => {
+  const { results } = await notion.databases.query({
+    database_id: "4e0e1441d11b41b2a526dc5c0f0f27fc",
+    filter: {
+      property: "佑弥管理",
+      relation: {
+        contains: logId,
+      },
+    },
+  });
+  // @ts-ignore
+  const hostProps: HostsImageRecord = results[0].properties;
+  return hostProps;
+};
 
 const createLogOutput = (
   logProps: LogProperty,
   morningActivity: MorningActivity,
-  monthlyProps: MonthlyRecord
+  monthlyProps: MonthlyRecord,
+  hostsImageRecord: HostsImageRecord
 ): LogOutPut => {
   // それぞれのデータを加工する
   const mornings = digMorningData(logProps, morningActivity);
   const device = digDeviceData(logProps, monthlyProps);
   const diet = digDietData(logProps, monthlyProps);
+  const diary = digDiaryData(logProps);
+  const hostsImage = digHostImageData(logProps, hostsImageRecord);
+  // const hostImage =
 
   //   結合する
   const logOutput: LogOutPut = {
@@ -81,6 +113,8 @@ const createLogOutput = (
     device,
     published: logProps.published.formula.boolean,
     tweetUrl: logProps.tweetUrl.url,
+    diary,
+    hostsImage,
   };
 
   return logOutput;

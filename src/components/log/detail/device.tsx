@@ -1,7 +1,6 @@
 import React from "react";
 import { LogOutPut } from "../../../../libs/notion/types";
 import Image from "next/image";
-import styled from "./section.module.scss";
 import { Paper } from "@mui/material";
 
 type Props = {

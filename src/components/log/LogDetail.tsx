@@ -7,6 +7,8 @@ import { Button } from "@mui/material";
 import Router from "next/router";
 import { useEffect } from "react";
 import { generateTweetData } from "@/pages/api/tweet/_generateTweet";
+import CheckListProps from "./detail/checkList";
+import HostImageProps from "./detail/hostsImage";
 
 type Props = {
   logOutput: LogOutPut;
@@ -36,6 +38,8 @@ const DisplayLog = ({ logOutput }: Props) => {
       <MorningProps morningProps={logOutput.mornings} />
       <DeviceProps deviceProps={logOutput.device} />
       <DietProps dietProps={logOutput.diet} />
+      <CheckListProps diaryProps={logOutput.diary} />
+      <HostImageProps hostsImageProps={logOutput.hostsImage} />
       <Button onClick={handleJumpToLogList}>一覧ページへ</Button>
     </>
   );

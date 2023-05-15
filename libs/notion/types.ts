@@ -59,6 +59,16 @@ export type Device = {
   screenTimeGapMinutes: string;
   monthlyScreenTime: number;
 };
+
+export type Diary = {
+  isDiaryDone: boolean;
+  isChatLogDone: boolean;
+};
+
+export type HostsImage = {
+  hostsLastEditedImage: string;
+  todayHostsImage: string;
+};
 // notion API response type components
 // ----------------------------------------
 
@@ -77,6 +87,9 @@ export type LogProperty = {
   morningActivityTime: DateProperty;
   published: FormulaBooleanProperty;
   tweetUrl: UrlProperty;
+  isDiaryDone: BooleanProperty;
+  isChatLogDone: BooleanProperty;
+  todayHostsImage: FileProperty;
 };
 
 export type MorningActivity = {
@@ -89,6 +102,11 @@ export type MonthlyRecord = {
   monthlyScreenTime: NumberProperty;
   monthlyCalorie: NumberProperty;
   monthlyCalorieIsUpper: BooleanProperty;
+};
+
+export type HostsImageRecord = {
+  hostsLastEditedImage: FileProperty;
+  changedReason: TitleProperty;
 };
 // ----------------------------------------
 // notion API response types
@@ -104,6 +122,8 @@ export type LogOutPut = {
   device: Device;
   published: boolean;
   tweetUrl: string;
+  diary: Diary;
+  hostsImage: HostsImage;
 };
 
 // ----------------------------------------

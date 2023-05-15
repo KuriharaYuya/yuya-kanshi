@@ -12,6 +12,7 @@ const TweetAdmin = () => {
         `${SERVER_URL()}/api/log/list?onlyPublished=false`
       );
       setLogData(data.tableData);
+      console.log(data.tableData);
     })();
   }, []);
 

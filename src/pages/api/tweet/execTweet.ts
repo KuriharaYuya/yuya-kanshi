@@ -20,7 +20,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const isValidLog = await validateLog(log);
   if (!isValidLog) {
     // 無効ならメッセージ付きで500エラーを出す
-    res.status(500).json({ message: "Invalid log" });
+
+    // ここでツイートを実行する
+    await axiosWithApiAuth.post(`${SERVER_URL()}/api/tweet/postTweet`);
     return;
   }
 

@@ -18,7 +18,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const logDate = params?.logDate as string;
 
-  const logData: LogOutPut = await getLogDetail(logDate);
+  const logData: LogOutPut = (await getLogDetail(logDate)) as LogOutPut;
 
   if (!logData) {
     return { notFound: true };

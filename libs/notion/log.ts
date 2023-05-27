@@ -27,6 +27,19 @@ export const getLogDetail = async (tgtDate: string) => {
       },
     },
   });
+
+  // まず、ここで投稿が不完全であることを検証する。trueであれば、500エラーを返す
+
+  if (
+    results.length === 0 ||
+    //  @ts-ignore
+    (results.length > 1 && results.properties.published === false)
+  ) {
+    // 500エラーを返す
+    return;
+  }
+
+  //   @ts-ignore
   const logId = results[0].id;
   //   @ts-ignore
   const logProperty = results[0].properties;

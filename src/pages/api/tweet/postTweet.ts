@@ -7,15 +7,22 @@ import axios from "axios";
 import { authUser } from "../_apiAuth";
 import { countPublishedLogs } from "../../../../libs/notion/logList";
 import { generateCommentData } from "./_generateComment";
+import { convertToISO, convertToJST } from "@/libs/timeLib";
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // '/api/log/ISO str' の 'ISO str' を取得する;
-  if (!authUser(req, res)) {
-    return;
-  }
+  // if (!authUser(req, res)) {
+  //   return;
+  // }
   if (!("log" in req.body)) {
-    await postTweet("irregular", "ログがありません");
-    res.status(200).json({ message: "tweet success" });
+    // 昨日の日付を取得
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const tweetTxt = `@intern_ukaruzo\nは${convertToISO(
+      yesterday
+    )}にログを投稿していません。サボっています`;
+    await postTweet("irregular", tweetTxt);
+    res.status(200).json({ message: tweetTxt });
     return;
   }
   const log = req.body.log as LogOutPut;
@@ -54,15 +61,18 @@ const postTweet = async (
       media: { media_ids: [mediaId] },
     });
     const tweetId = data.id;
-
     // リプライを送る
     const replyText = generateCommentData();
     await client.v2.reply(replyText, tweetId);
+
     lastTweetId = tweetId;
     return tweetId;
   } else if (type === "irregular") {
     const { data } = await client.v2.tweet(tweetText);
     const tweetId = data.id;
+    // リプライを送る
+    const replyText = generateCommentData();
+    await client.v2.reply(replyText, tweetId);
     lastTweetId = tweetId;
     return tweetId;
   }

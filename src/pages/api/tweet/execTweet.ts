@@ -9,9 +9,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const tgtDate = req.query.date as string;
 
   // headerのauthを検証する
-  if (!authUser(req, res)) {
-    return;
-  }
+  // if (!authUser(req, res)) {
+  //   return;
+  // }
   const { data } = (await axiosWithApiAuth.get(
     `${SERVER_URL()}/api/log?date=${tgtDate}`
   )) as { data: LogOutPut };

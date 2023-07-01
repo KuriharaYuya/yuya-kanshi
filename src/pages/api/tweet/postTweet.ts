@@ -17,7 +17,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!("log" in req.body)) {
     // 昨日の日付を取得
     const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
+    yesterday.setDate(yesterday.getDate());
     const tweetTxt = `@intern_ukaruzo\nは${convertToISO(
       yesterday
     )}にログを投稿していません。サボっています`;

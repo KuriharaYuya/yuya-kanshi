@@ -1,10 +1,10 @@
 import fetch from "node-fetch";
 import { writeFile, unlink } from "fs";
 import { promisify } from "util";
-import { getLogDetail } from "../../../../libs/notion/log";
-import { LogOutPut } from "../../../../libs/notion/types";
-import { WRAPTAS_URL, notion } from "../../../../libs/notion/utils";
-import { uploadImageToS3 } from "../../../../libs/aws/s3";
+import { getLogDetail } from "../../../../../libs/notion/log";
+import { LogOutPut } from "../../../../../libs/notion/types";
+import { WRAPTAS_URL, notion } from "../../../../../libs/notion/utils";
+import { uploadImageToS3 } from "./s3";
 import { type } from "os";
 
 export const appendContents = async (date: string) => {
@@ -16,7 +16,7 @@ export const appendContents = async (date: string) => {
   let imageIndex = 0;
   for (const item of data.contents) {
     // 2秒待機する
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     try {
       switch (item.type) {
         case "title":

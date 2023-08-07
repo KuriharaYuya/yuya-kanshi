@@ -140,3 +140,5 @@ export const notion = new Client({
 // ----------------------------------------
 // declare notion Client
 // ----------------------------------------
+
+export const WRAPTAS_URL = "https://yuyanki.wraptas.site/";

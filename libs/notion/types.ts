@@ -77,6 +77,7 @@ export type HostsImage = {
 export type LogProperty = {
   // TODO ここで、掘るよ
   uuid: FormulaStringProperty;
+  filledAtr: FormulaBooleanProperty;
   title: TitleProperty;
   date: DateProperty;
   morningImage: FileProperty;
@@ -121,9 +122,16 @@ export type LogOutPut = {
   diet: Diet;
   device: Device;
   published: boolean;
+  filledAtr: boolean;
   tweetUrl: string;
   diary: Diary;
   hostsImage: HostsImage;
+  workOut: {
+    pageId: string;
+    title: string;
+    gymLoginPic: string;
+  };
+  calenderPic: string;
 };
 
 // ----------------------------------------

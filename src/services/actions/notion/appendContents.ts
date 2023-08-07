@@ -16,7 +16,7 @@ export const appendContents = async (date: string) => {
   let imageIndex = 0;
   for (const item of data.contents) {
     // 2秒待機する
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     try {
       switch (item.type) {
         case "title":

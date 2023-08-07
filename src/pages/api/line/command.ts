@@ -13,6 +13,8 @@ const handler = async (
   req: NextApiRequest & { body: LineRequestBody },
   res: NextApiResponse
 ) => {
+  if (req.method !== "POST") return res.status(405).end();
+
   const text = req.body.events[0].message.text as string;
 
   // メッセージの種類と日付を取得する

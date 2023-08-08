@@ -14,6 +14,10 @@ export const appendContents = async (date: string) => {
   // imageならimg
   //   const sections = Object.keys(data);
   let imageIndex = 0;
+  // nextがprodの時は、ここでreturnする
+  if (process.env.NODE_ENV === "production") {
+    return `${WRAPTAS_URL}/${data.uuid}`;
+  }
   for (const item of data.contents) {
     // 2秒待機する
     await new Promise((resolve) => setTimeout(resolve, 500));

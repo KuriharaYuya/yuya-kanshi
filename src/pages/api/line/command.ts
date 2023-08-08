@@ -16,6 +16,13 @@ const handler = async (
 ) => {
   if (req.method !== "POST") return res.status(405).end();
 
+  const eventType = req.body.events[0].type;
+  if (eventType === "join") {
+    // 必要な処理をここに追加します（例えば、「参加しました」というメッセージを送るなど）
+    // msg('参加しました！');
+    return res.status(200).json({ message: "success" });
+  }
+
   const text = req.body.events[0].message.text as string;
 
   // メッセージの種類と日付を取得する

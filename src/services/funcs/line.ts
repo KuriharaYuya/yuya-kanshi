@@ -3,10 +3,16 @@ import { LogStatus, MessageProp } from "../../../libs/line/type";
 import { getLogDetail } from "../../../libs/notion/log";
 
 export const getMessageProp = (command: string) => {
+  if (!command.startsWith("コンソール: ")) return null;
+
+  const commandBody = command.slice("コンソール: ".length);
   const types = { status: "ステータス", publish: "投稿" };
-  if (command.startsWith(types.status) || command.startsWith(types.publish)) {
-    const type = command.startsWith("ステータス") ? "ステータス" : "投稿";
-    const dateIso = command.slice(type.length).replace(/\//g, "-");
+  if (
+    commandBody.startsWith(types.status) ||
+    commandBody.startsWith(types.publish)
+  ) {
+    const type = commandBody.startsWith("ステータス") ? "ステータス" : "投稿";
+    const dateIso = commandBody.slice(type.length).replace(/\//g, "-");
     const props: MessageProp = {
       type: type,
       dateIso: dateIso,

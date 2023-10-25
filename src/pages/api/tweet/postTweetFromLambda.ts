@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { TwitterApi } from "twitter-api-v2";
 import { generateCommentData } from "./_generateComment";
 
-export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // bodyにはjsonでこうくる
   // {
   //     text: "string",
@@ -12,6 +12,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const bodyData = req.body;
   const tweetText = bodyData.text;
   const imagePath = bodyData.mediaUrl;
+  console.log(imagePath);
   //     - [ ]  textをそのまま反映。
   // - [ ]  画像をローカルに落としてmediaに上げる。
   // - [ ]  投稿
@@ -45,3 +46,5 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   lastTweetId = tweetId;
   res.status(200).json({ lastTweetId });
 };
+
+export default handler;

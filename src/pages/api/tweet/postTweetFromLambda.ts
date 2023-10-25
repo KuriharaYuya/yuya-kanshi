@@ -43,5 +43,5 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await client.v2.reply(replyText, tweetId);
 
   lastTweetId = tweetId;
-  return tweetId;
+  res.status(200).json({ lastTweetId });
 };

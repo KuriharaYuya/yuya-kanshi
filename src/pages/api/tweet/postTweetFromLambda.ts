@@ -23,6 +23,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     accessToken: process.env.NEXT_PUBLIC_ACESS_TOKEN as string,
     accessSecret: process.env.NEXT_PUBLIC_ACESS_TOKEN_SECRET as string,
   });
+  //   envを出力する
+  console.log(
+    "next_public_app_key:",
+    process.env.NEXT_PUBLIC_APP_KEY,
+    "next_public_app_secret:",
+    process.env.NEXT_PUBLIC_APP_SECRET,
+    "next_public_acess_token:",
+    process.env.NEXT_PUBLIC_ACESS_TOKEN,
+    "next_public_acess_token_secret:",
+    process.env.NEXT_PUBLIC_ACESS_TOKEN_SECRET
+  );
 
   let lastTweetId = "";
 

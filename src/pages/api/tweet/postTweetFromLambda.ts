@@ -68,22 +68,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     lastTweetId = tweetId;
 
     // Retweet
-    let authenticatedUserId;
-    try {
-      const response = await client.v1.verifyCredentials();
-      authenticatedUserId = response.id_str; // or response.id depending on the returned object structure
-    } catch (error: any) {
-      throw new Error(
-        `Failed to get authenticated user's ID: ${error.message}`
-      );
-    }
+    // let authenticatedUserId;
+    // try {
+    //   const response = await client.v1.verifyCredentials();
+    //   authenticatedUserId = response.id_str; // or response.id depending on the returned object structure
+    // } catch (error: any) {
+    //   throw new Error(
+    //     `Failed to get authenticated user's ID: ${error.message}`
+    //   );
+    // }
 
-    // Use authenticatedUserId wherever you need it
+    // // Use authenticatedUserId wherever you need it
     // const retweetTgtUserId = authenticatedUserId;
     // try {
     //   console.log(`Retweeting ${retweetTgtUserId}'s tweet...${tweetId}`);
-    //   const idStr = "kurihara_poni3";
-    //   await client.v2.retweet(idStr, tweetId);
+    //   await client.v2.retweet(retweetTgtUserId, tweetId);
     // } catch (error: any) {
     //   console.error(error);
     //   throw new Error(

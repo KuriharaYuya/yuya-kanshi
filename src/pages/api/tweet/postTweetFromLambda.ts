@@ -9,19 +9,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const tweetText = bodyData.text;
     const imagePath = bodyData.mediaUrl;
 
-    const client = new TwitterApi({
-      appKey: process.env.NEXT_PUBLIC_YUYA_APP_KEY as string,
-      appSecret: process.env.NEXT_PUBLIC_YUYA_APP_SECRET as string,
-      accessToken: process.env.NEXT_PUBLIC_YUYA_ACESS_TOKEN as string,
-      accessSecret: process.env.NEXT_PUBLIC_YUYA_ACESS_TOKEN_SECRET as string,
-    });
-
     const poni3Client = new TwitterApi({
       appKey: process.env.NEXT_PUBLIC_PONI3_APP_KEY as string,
       appSecret: process.env.NEXT_PUBLIC_PONI3_APP_SECRET as string,
       accessToken: process.env.NEXT_PUBLIC_PONI3_ACESS_TOKEN as string,
       accessSecret: process.env.NEXT_PUBLIC_PONI3_ACESS_TOKEN_SECRET as string,
     });
+
+    // production環境でもconsole.logを出力する
+    console.log("appKey", process.env.NEXT_PUBLIC_PONI3_APP_KEY);
+    console.log("appSecret", process.env.NEXT_PUBLIC_PONI3_APP_SECRET);
+    console.log("accessToken", process.env.NEXT_PUBLIC_PONI3_ACESS_TOKEN);
+    console.log(
+      "accessSecret",
+      process.env.NEXT_PUBLIC_PONI3_ACESS_TOKEN_SECRET
+    );
 
     let lastTweetId = "";
 

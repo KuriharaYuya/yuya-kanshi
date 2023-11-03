@@ -1,7 +1,7 @@
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import { TwitterApi } from "twitter-api-v2";
-import { generateCommentData } from "./_generateComment";
+import { generateCommentData, generateCommentData2 } from "./_generateComment";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -61,6 +61,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // Send a reply
     try {
       await poni3Client.v2.reply(generateCommentData(), tweetId);
+    } catch (error: any) {
+      throw new Error(`Failed to send reply: ${error.message}`);
+    }
+
+    // Send a reply 2
+    try {
+      await poni3Client.v2.reply(generateCommentData2(), tweetId);
     } catch (error: any) {
       throw new Error(`Failed to send reply: ${error.message}`);
     }

@@ -94,13 +94,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       throw new Error(`Failed to send reply: ${error.message}`);
     }
 
-    // Send a reply 2
-    try {
-      await poni3Client.v2.reply(generateCommentData2(), tweetId);
-    } catch (error: any) {
-      throw new Error(`Failed to send reply: ${error.message}`);
-    }
-
     lastTweetId = tweetId;
 
     res.status(200).json({ lastTweetId });

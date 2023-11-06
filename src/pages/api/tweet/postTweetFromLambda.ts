@@ -6,8 +6,11 @@ import { generateCommentData, generateCommentData2 } from "./_generateComment";
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const bodyData = req.body;
+
     const tweetText = bodyData.text;
-    const imagePath = bodyData.mediaUrl;
+    const imagePath = bodyData.screenTimeURl;
+    const memo = bodyData.memo;
+    const calenderPicURl = bodyData.calenderPicURl;
 
     const poni3Client = new TwitterApi({
       appKey: process.env.NEXT_PUBLIC_PONI3_APP_KEY as string,
@@ -35,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
       buffer = Buffer.from(response.data, "binary");
     } catch (error: any) {
-      throw new Error(`Failed to download image: ${error.message}`);
+      throw new Error(`Failed to download image2: ${error.message}`);
     }
 
     // Upload the image as a media
@@ -60,9 +63,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const tweetId = data.id;
 
-    // Send a reply
+    // Send a reply with image
+
+    // Download the image
+    let buffer2;
     try {
-      await poni3Client.v2.reply(generateCommentData(), tweetId);
+      const response = await axios.get(calenderPicURl, {
+        responseType: "arraybuffer",
+      });
+      buffer2 = Buffer.from(response.data, "binary");
+    } catch (error: any) {
+      throw new Error(`Failed to download image2: ${error.message}`);
+    }
+
+    // Upload the image as a media
+    let mediaId2;
+    try {
+      mediaId2 = await poni3Client.v1.uploadMedia(buffer2, {
+        type: "image/png",
+      });
+    } catch (error: any) {
+      throw new Error(`Failed to upload media: ${error.message}`);
+    }
+
+    try {
+      await poni3Client.v2.reply(memo, tweetId, {
+        media: { media_ids: [mediaId2] },
+      });
     } catch (error: any) {
       throw new Error(`Failed to send reply: ${error.message}`);
     }
@@ -75,29 +102,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     lastTweetId = tweetId;
-
-    // Retweet
-    // let authenticatedUserId;
-    // try {
-    //   const response = await client.v1.verifyCredentials();
-    //   authenticatedUserId = response.id_str; // or response.id depending on the returned object structure
-    // } catch (error: any) {
-    //   throw new Error(
-    //     `Failed to get authenticated user's ID: ${error.message}`
-    //   );
-    // }
-
-    // // Use authenticatedUserId wherever you need it
-    // const retweetTgtUserId = authenticatedUserId;
-    // try {
-    //   console.log(`Retweeting ${retweetTgtUserId}'s tweet...${tweetId}`);
-    //   await client.v2.retweet(retweetTgtUserId, tweetId);
-    // } catch (error: any) {
-    //   console.error(error);
-    //   throw new Error(
-    //     `Failed to retweet: ${error.message} - ${error?.errors?.[0]?.message}`
-    //   );
-    // }
 
     res.status(200).json({ lastTweetId });
   } catch (globalError) {

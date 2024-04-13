@@ -1,17 +1,13 @@
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import { TwitterApi } from "twitter-api-v2";
-import { generateCommentData, generateCommentData2 } from "./_generateComment";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const bodyData = req.body;
-
     const tweetText = bodyData.text;
-    const screenTimeURl = bodyData.screenTimeURl;
-    const morningImageURL = bodyData.morningImageURL;
-    const sleepCycleURL = bodyData.sleepCycleURL;
-    const gymPicURL = bodyData.gymPicURL;
+    const screenTimeAndGymLoginImage = bodyData.screenTimeAndGymLoginImage;
+    const sleepCycleAndMorningImage = bodyData.sleepCycleAndMorningImage;
 
     const poni3Client = new TwitterApi({
       appKey: process.env.NEXT_PUBLIC_PONI3_APP_KEY as string,
@@ -31,20 +27,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // ここから
 
-    const screenTimeMediaId = await uploadMedia(screenTimeURl, poni3Client);
-    const morningImageMediaId = await uploadMedia(morningImageURL, poni3Client);
-    const sleepCycleMediaId = await uploadMedia(sleepCycleURL, poni3Client);
-    const gymPicMediaId = await uploadMedia(gymPicURL, poni3Client);
+    const screenTimeAndGymLoginMediaId = await uploadMedia(
+      screenTimeAndGymLoginImage,
+      poni3Client
+    );
+    const sleepCycleAndMorningMediaId = await uploadMedia(
+      sleepCycleAndMorningImage,
+      poni3Client
+    );
 
     let data;
     try {
       const result = await poni3Client.v2.tweet(tweetText, {
         media: {
           media_ids: [
-            screenTimeMediaId,
-            morningImageMediaId,
-            sleepCycleMediaId,
-            gymPicMediaId,
+            screenTimeAndGymLoginMediaId,
+            sleepCycleAndMorningMediaId,
           ],
         },
       });

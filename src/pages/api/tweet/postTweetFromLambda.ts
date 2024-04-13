@@ -8,9 +8,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const bodyData = req.body;
 
     const tweetText = bodyData.text;
-    const imagePath = bodyData.screenTimeURl;
+    const screenTimeURl = bodyData.screenTimeURl;
+    const morningImageURL = bodyData.morningImageURL;
+    const sleepCycleURL = bodyData.sleepCycleURL;
     const memo = bodyData.memo;
-    const calenderPicURl = bodyData.calenderPicURl;
 
     const poni3Client = new TwitterApi({
       appKey: process.env.NEXT_PUBLIC_PONI3_APP_KEY as string,
@@ -33,12 +34,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // Download the image
     let buffer;
     try {
-      const response = await axios.get(imagePath, {
+      const response = await axios.get(screenTimeURl, {
         responseType: "arraybuffer",
       });
       buffer = Buffer.from(response.data, "binary");
     } catch (error: any) {
-      throw new Error(`Failed to download image2: ${error.message}`);
+      throw new Error(`Failed to download image1: ${error.message}`);
     }
 
     // Upload the image as a media
@@ -68,7 +69,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // Download the image
     let buffer2;
     try {
-      const response = await axios.get(calenderPicURl, {
+      const response = await axios.get(morningImageURL, {
         responseType: "arraybuffer",
       });
       buffer2 = Buffer.from(response.data, "binary");

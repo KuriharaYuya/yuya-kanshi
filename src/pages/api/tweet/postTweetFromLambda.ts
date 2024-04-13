@@ -11,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const screenTimeURl = bodyData.screenTimeURl;
     const morningImageURL = bodyData.morningImageURL;
     const sleepCycleURL = bodyData.sleepCycleURL;
-    const memo = bodyData.memo;
+    const gymPicURL = bodyData.gymPicURL;
 
     const poni3Client = new TwitterApi({
       appKey: process.env.NEXT_PUBLIC_PONI3_APP_KEY as string,
@@ -31,31 +31,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     let lastTweetId = "";
 
-    // Download the image
-    let buffer;
-    try {
-      const response = await axios.get(screenTimeURl, {
-        responseType: "arraybuffer",
-      });
-      buffer = Buffer.from(response.data, "binary");
-    } catch (error: any) {
-      throw new Error(`Failed to download image1: ${error.message}`);
-    }
+    // ここから
 
-    // Upload the image as a media
-    let mediaId;
-    try {
-      mediaId = await poni3Client.v1.uploadMedia(buffer, {
-        type: "image/png",
-      });
-    } catch (error: any) {
-      throw new Error(`Failed to upload media: ${error.message}`);
-    }
+    const screenTimeMediaId = await uploadMedia(screenTimeURl, poni3Client);
+    const morningImageMediaId = await uploadMedia(morningImageURL, poni3Client);
+    const sleepCycleMediaId = await uploadMedia(sleepCycleURL, poni3Client);
+    const gymPicMediaId = await uploadMedia(gymPicURL, poni3Client);
 
     let data;
     try {
       const result = await poni3Client.v2.tweet(tweetText, {
-        media: { media_ids: [mediaId] },
+        media: {
+          media_ids: [
+            screenTimeMediaId,
+            morningImageMediaId,
+            sleepCycleMediaId,
+            gymPicMediaId,
+          ],
+        },
       });
       data = result.data;
     } catch (error: any) {
@@ -64,36 +57,38 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const tweetId = data.id;
 
-    // Send a reply with image
+    // // Send a reply with image
 
-    // Download the image
-    let buffer2;
-    try {
-      const response = await axios.get(morningImageURL, {
-        responseType: "arraybuffer",
-      });
-      buffer2 = Buffer.from(response.data, "binary");
-    } catch (error: any) {
-      throw new Error(`Failed to download image2: ${error.message}`);
-    }
+    // // Download the image
+    // let buffer2;
+    // try {
+    //   const response = await axios.get(morningImageURL, {
+    //     responseType: "arraybuffer",
+    //   });
+    //   buffer2 = Buffer.from(response.data, "binary");
+    // } catch (error: any) {
+    //   throw new Error(`Failed to download image2: ${error.message}`);
+    // }
 
-    // Upload the image as a media
-    let mediaId2;
-    try {
-      mediaId2 = await poni3Client.v1.uploadMedia(buffer2, {
-        type: "image/png",
-      });
-    } catch (error: any) {
-      throw new Error(`Failed to upload media: ${error.message}`);
-    }
+    // // Upload the image as a media
+    // let mediaId2;
+    // try {
+    //   mediaId2 = await poni3Client.v1.uploadMedia(buffer2, {
+    //     type: "image/png",
+    //   });
+    // } catch (error: any) {
+    //   throw new Error(`Failed to upload media: ${error.message}`);
+    // }
 
-    try {
-      await poni3Client.v2.reply(memo, tweetId, {
-        media: { media_ids: [mediaId2] },
-      });
-    } catch (error: any) {
-      throw new Error(`Failed to send reply: ${error.message}`);
-    }
+    // // ここまで
+
+    // try {
+    //   await poni3Client.v2.reply(memo, tweetId, {
+    //     media: { media_ids: [mediaId2] },
+    //   });
+    // } catch (error: any) {
+    //   throw new Error(`Failed to send reply: ${error.message}`);
+    // }
 
     lastTweetId = tweetId;
 
@@ -105,4 +100,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+const uploadMedia = async (sourceURL: string, twClient: TwitterApi) => {
+  // Download the image
+  let buffer;
+  try {
+    const response = await axios.get(sourceURL, {
+      responseType: "arraybuffer",
+    });
+    buffer = Buffer.from(response.data, "binary");
+  } catch (error: any) {
+    throw new Error(`Failed to download image${sourceURL}: ${error.message}`);
+  }
+
+  // Upload the image as a media
+  let mediaId;
+  try {
+    mediaId = await twClient.v1.uploadMedia(buffer, {
+      type: "image/png",
+    });
+    return mediaId;
+  } catch (error: any) {
+    throw new Error(`Failed to upload media: ${error.message}`);
+  }
+};
 export default handler;

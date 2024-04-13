@@ -38,7 +38,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       const result = await poni3Client.v2.tweet(tweetText, {
         media: {
-          media_ids: [screenTimeMediaId, morningImageMediaId],
+          media_ids: [
+            screenTimeMediaId,
+            morningImageMediaId,
+            sleepCycleURL,
+            gymPicURL,
+          ],
         },
       });
       data = result.data;
@@ -81,12 +86,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     //   throw new Error(`Failed to send reply: ${error.message}`);
     // }
 
-    uploadAndTweetRemainingMedia(
-      poni3Client,
-      tweetId,
-      sleepCycleURL,
-      gymPicURL
-    );
+    // uploadAndTweetRemainingMedia(
+    //   poni3Client,
+    //   tweetId,
+    //   sleepCycleURL,
+    //   gymPicURL
+    // );
 
     res.status(200).json({ lastTweetId: tweetId });
   } catch (globalError) {

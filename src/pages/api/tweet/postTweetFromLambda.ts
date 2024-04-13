@@ -29,25 +29,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       process.env.NEXT_PUBLIC_PONI3_ACESS_TOKEN_SECRET
     );
 
-    let lastTweetId = "";
-
     // ここから
 
     const screenTimeMediaId = await uploadMedia(screenTimeURl, poni3Client);
     const morningImageMediaId = await uploadMedia(morningImageURL, poni3Client);
-    const sleepCycleMediaId = await uploadMedia(sleepCycleURL, poni3Client);
-    const gymPicMediaId = await uploadMedia(gymPicURL, poni3Client);
 
     let data;
     try {
       const result = await poni3Client.v2.tweet(tweetText, {
         media: {
-          media_ids: [
-            screenTimeMediaId,
-            morningImageMediaId,
-            sleepCycleMediaId,
-            gymPicMediaId,
-          ],
+          media_ids: [screenTimeMediaId, morningImageMediaId],
         },
       });
       data = result.data;
@@ -90,16 +81,39 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     //   throw new Error(`Failed to send reply: ${error.message}`);
     // }
 
-    lastTweetId = tweetId;
+    uploadAndTweetRemainingMedia(
+      poni3Client,
+      tweetId,
+      sleepCycleURL,
+      gymPicURL
+    );
 
-    res.status(200).json({ lastTweetId });
+    res.status(200).json({ lastTweetId: tweetId });
   } catch (globalError) {
     console.error(globalError);
     // @ts-ignore
     res.status(500).json({ error: globalError.message });
   }
 };
+const uploadAndTweetRemainingMedia = async (
+  twClient: TwitterApi,
+  tweetId: string,
+  sleepCycleURL: string,
+  gymPicURL: string
+) => {
+  const sleepCycleMediaId = await uploadMedia(sleepCycleURL, twClient);
+  const gymPicMediaId = await uploadMedia(gymPicURL, twClient);
 
+  try {
+    await twClient.v2.reply("残りの画像です", tweetId, {
+      media: {
+        media_ids: [sleepCycleMediaId, gymPicMediaId],
+      },
+    });
+  } catch (error: any) {
+    throw new Error(`Failed to send reply: ${error.message}`);
+  }
+};
 const uploadMedia = async (sourceURL: string, twClient: TwitterApi) => {
   // Download the image
   let buffer;

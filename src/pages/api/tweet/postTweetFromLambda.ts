@@ -33,6 +33,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const screenTimeMediaId = await uploadMedia(screenTimeURl, poni3Client);
     const morningImageMediaId = await uploadMedia(morningImageURL, poni3Client);
+    const sleepCycleMediaId = await uploadMedia(sleepCycleURL, poni3Client);
+    const gymPicMediaId = await uploadMedia(gymPicURL, poni3Client);
 
     let data;
     try {
@@ -41,8 +43,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           media_ids: [
             screenTimeMediaId,
             morningImageMediaId,
-            sleepCycleURL,
-            gymPicURL,
+            sleepCycleMediaId,
+            gymPicMediaId,
           ],
         },
       });
